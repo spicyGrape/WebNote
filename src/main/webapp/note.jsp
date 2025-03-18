@@ -14,13 +14,16 @@
     <div contenteditable="true" id="noteTitle" class="noteTitle"><%=note.getTitle()%>
     </div>
     <div id="noteContents">
-        <% for (NoteContent content : note.getContents()) { %>
+        <% int contentSize = note.getContents().size();%>
+        <% for (int i = 0; i < contentSize; i++) { %>
+        <% NoteContent content = note.getContents().get(i); %>
         <div>
             <div contenteditable="true" class="noteContent" data-content-type="<%=content.getContentType()%>">
                 <% if ("text".equals(content.getContentType())) { %>
-                <%=content.getContent()%>
+                <p><%=content.getContent()%>
+                </p>
                 <% } else if ("image".equals(content.getContentType())) { %>
-                <img src="<%=content.getContent()%>" alt="Image content">
+                <img src="${pageContext.request.contextPath}/image?file=<%=content.getContent()%>" alt="Image content">
                 <% } else if ("url".equals(content.getContentType())) { %>
                 <a href="<%=content.getContent()%>"><%=content.getContent()%>
                 </a>
@@ -28,17 +31,30 @@
                 <%=content.getContent()%>
                 <% } %>
             </div>
-            <button class="delete-button" onclick="deleteContent(this)">Delete</button>
+            <form action="deleteNoteContent.html" method="post">
+                <input type="hidden" name="noteId" value="<%=note.getId()%>">
+                <input type="hidden" name="contentIndex" value="<%=i%>">
+                <button type="submit" class="delete-button">Delete</button>
+            </form>
         </div>
         <% } %>
     </div>
+    <!-- Image Upload form (hidden) -->
+    <form id="imageUploadForm" action="uploadImage.html" method="post" enctype="multipart/form-data"
+          style="display:none;">
+        <input type="file" name="imageFile" id="imageFile">
+        <input type="hidden" name="noteId" value="<%=note.getId()%>">
+        <input type="submit" value="Upload Image">
+    </form>
     <button id="addTextButton" onclick="addNewContentDiv('text')">Add Text</button>
-    <button id="addImageButton" onclick="addNewContentDiv('image')">Add Image</button>
+    <button id="addImageButton" onclick="showImageUploadForm()">Add Image</button>
     <button id="addUrlButton" onclick="addNewContentDiv('url')">Add URL</button>
     <button id="addHtmlButton" onclick="addNewContentDiv('html')">Add HTML</button>
     <button id="saveButton">Save</button>
 </div>
 <jsp:include page="/footer.jsp"/>
+
+
 <script>
     function saveNote() {
         let noteId = "<%=note.getId()%>";
@@ -55,7 +71,10 @@
             } else if (contentType === "html") {
                 contentValue = contentDivs[i].innerHTML;
             } else if (contentType === "image") {
-                const match = contentDivs[i].innerHTML.match(/src="([^"]+)"/);
+                console.log(contentDivs[i].innerHTML);
+                const regex = /src="\/image\?file=([^"]+)"/;
+                const match = contentDivs[i].innerHTML.match(regex);
+                console.log(match);
                 contentValue = match ? match[1] : "";
             } else if (contentType === "url") {
                 const match = contentDivs[i].innerHTML.match(/href="([^"]+)">/);
@@ -109,6 +128,11 @@
         let contentDiv = button.parentElement;
         contentDiv.innerHTML = "";
         saveNote();
+    }
+
+    function showImageUploadForm() {
+        let form = document.getElementById("imageUploadForm");
+        form.style.display = "block";
     }
 
     document.getElementById("saveButton").addEventListener("click", saveNote);
