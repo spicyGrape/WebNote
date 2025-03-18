@@ -19,11 +19,10 @@ public class UploadImageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String noteId = request.getParameter("noteId");
         Part filePart = request.getPart("imageFile");
-        // filePart.write("test.jpeg");
         NoteService noteService = NoteServiceFactory.getNoteService();
         String imageSrc = noteService.uploadImage(filePart.getInputStream(), filePart.getSubmittedFileName());
         Note note = noteService.getNoteById(noteId);
-        note.appendImage(imageSrc);
+        note.appendImage(imageSrc, "image");
         noteService.updateNote(note);
 
         response.sendRedirect("note.html?noteId=" + noteId);

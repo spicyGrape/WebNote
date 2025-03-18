@@ -48,9 +48,9 @@ public class Note {
         return contents;
     }
 
-    public void appendImage(String imageSrc) {
-        NoteContent imageContent = new NoteContent(imageSrc, "image");
-        contents.add(imageContent);
+    public void appendImage(String content, String contentType) {
+        NoteContent newContent = new NoteContent(content, contentType);
+        contents.add(newContent);
     }
 
     public void deleteAllContents() {
