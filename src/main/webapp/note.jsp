@@ -25,7 +25,7 @@
                 <% } else if ("image".equals(content.getContentType())) { %>
                 <img src="${pageContext.request.contextPath}/image?file=<%=content.getContent()%>" alt="Image content">
                 <% } else if ("url".equals(content.getContentType())) { %>
-                <a href="<%=content.getContent()%>"><%=content.getContent()%>
+                <a href="<%=content.getContent()%>" contenteditable="false"><%=content.getContent()%>
                 </a>
                 <% } else if ("html".equals(content.getContentType())) { %>
                 <%=content.getContent()%>
@@ -46,9 +46,16 @@
         <input type="hidden" name="noteId" value="<%=note.getId()%>">
         <input type="submit" value="Upload Image">
     </form>
+    <!-- url Upload form (hidden) -->
+    <form id="urlUploadForm" action="uploadUrl.html" method="post" style="display:none;">
+        <input type="text" name="url" id="url">
+        <input type="hidden" name="noteId" value="<%=note.getId()%>">
+        <input type="submit" value="Upload URL">
+    </form>
+
     <button id="addTextButton" onclick="addNewContentDiv('text')">Add Text</button>
     <button id="addImageButton" onclick="showImageUploadForm()">Add Image</button>
-    <button id="addUrlButton" onclick="addNewContentDiv('url')">Add URL</button>
+    <button id="addUrlButton" onclick="showUrlUploadForm()">Add URL</button>
     <button id="addHtmlButton" onclick="addNewContentDiv('html')">Add HTML</button>
     <button id="saveButton">Save</button>
 </div>
@@ -77,7 +84,9 @@
                 console.log(match);
                 contentValue = match ? match[1] : "";
             } else if (contentType === "url") {
-                const match = contentDivs[i].innerHTML.match(/href="([^"]+)">/);
+                console.log(contentDivs[i].innerHTML);
+                const match = contentDivs[i].innerHTML.match(/href="([^"]+)"/);
+                console.log(match);
                 contentValue = match ? match[1] : "";
             }
             // Ignore empty content and empty strings
@@ -132,6 +141,11 @@
 
     function showImageUploadForm() {
         let form = document.getElementById("imageUploadForm");
+        form.style.display = "block";
+    }
+
+    function showUrlUploadForm() {
+        let form = document.getElementById("urlUploadForm");
         form.style.display = "block";
     }
 

@@ -32,8 +32,11 @@ public class SaveNoteServlet extends HttpServlet {
                 String content = noteContents[i];
                 String contentType = contentTypes[i];
                 if (content != null && !content.trim().isEmpty() && contentType != null && !contentType.trim().isEmpty()) {
-                    String formattedContent = content.replace("\r\n", "<br>")
-                            .replace("\n", "<br>");
+                    String formattedContent = content;
+                    if (contentType.equals("text")) {
+                        formattedContent = formattedContent.replace("\r\n", "<br>")
+                                .replace("\n", "<br>");
+                    }
                     contents.add(new NoteContent(formattedContent, contentType));
                 }
             }

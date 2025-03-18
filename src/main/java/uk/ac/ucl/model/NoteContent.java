@@ -7,6 +7,8 @@ import java.io.File;
 
 public class NoteContent {
     private String content;
+
+    // contentType can be "text", "image", "url" or "html"
     private String contentType;
 
     @JsonCreator
