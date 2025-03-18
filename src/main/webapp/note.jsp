@@ -136,6 +136,7 @@
     }
 
     document.getElementById("saveButton").addEventListener("click", saveNote);
+    document.getElementById("noteTitle").addEventListener("blur", saveNote);
     let contentDivs = document.getElementsByClassName("noteContent");
     for (let i = 0; i < contentDivs.length; i++) {
         contentDivs[i].addEventListener("blur", saveNote);
