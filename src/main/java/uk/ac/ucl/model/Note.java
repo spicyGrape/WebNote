@@ -53,6 +53,20 @@ public class Note {
         contents.add(newContent);
     }
 
+    public String getTextSummary() {
+        StringBuilder summary = new StringBuilder();
+        for (NoteContent content : contents) {
+            if (content.getContentType().equals("text")) {
+                summary.append(content.getContent().replaceAll("<br>", " "));
+            } else {
+                // For non-text content, we can append a placeholder or description
+                String description = "[A piece of " + content.getContentType() + " content] ";
+                summary.append(description);
+            }
+        }
+        return summary.toString();
+    }
+
     public void deleteAllContents() {
         for (NoteContent content : contents) {
             content.deleteContent();

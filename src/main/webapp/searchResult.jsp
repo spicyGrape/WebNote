@@ -23,14 +23,11 @@
             <h3><a href="note.html?noteId=<%=note.getId()%>"><%=note.getTitle()%>
             </a>
             </h3>
-            <%
-                for (uk.ac.ucl.model.NoteContent content : note.getContents()) {
-            %>
-            <p><%=content.getContent()%>
+            <p><%=note.getTextSummary()%>
             </p>
             <% } %>
         </li>
-        <% }
+        <%
         } else {%>
         <p>Nothing found</p>
         <%}%>
