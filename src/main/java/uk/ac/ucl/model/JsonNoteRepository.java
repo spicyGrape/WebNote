@@ -15,15 +15,19 @@ import java.util.Set;
 
 public class JsonNoteRepository implements NoteRepository {
     private Map<String, Note> notes;
+    private Map<String, Set<String>> categoryCollection;
+    private final String categoryCollectionFilePath;
     private final String indexFilePath;
     private final String notesDirectory;
     private final String imageDirectory;
 
-    public JsonNoteRepository(String indexFilePath, String notesDirectory, String imageDirectory) {
+    public JsonNoteRepository(String indexFilePath, String notesDirectory, String imageDirectory, String categoryCollectionFilePath) {
         notes = new HashMap<>();
+        categoryCollection = new HashMap<>();
         this.indexFilePath = indexFilePath;
         this.notesDirectory = notesDirectory;
         this.imageDirectory = imageDirectory;
+        this.categoryCollectionFilePath = categoryCollectionFilePath;
         if (!Files.exists(new File(notesDirectory).toPath())) {
             new File(notesDirectory).mkdirs();
         }
@@ -56,6 +60,71 @@ public class JsonNoteRepository implements NoteRepository {
             }
         }
         return file;
+    }
+
+    private void saveCategoryCollection() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.writeValue(openFile(categoryCollectionFilePath), categoryCollection);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCategoryCollection() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            categoryCollection = objectMapper.readValue(openFile(categoryCollectionFilePath), new TypeReference<Map<String, Set<String>>>() {
+            });
+        } catch (MismatchedInputException e) {
+            // If the file is empty, just return.
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createNamedCategory(String name) {
+        if (!categoryCollection.containsKey(name)) {
+            categoryCollection.put(name, null);
+            saveCategoryCollection();
+        }
+    }
+
+    @Override
+    public void addNoteToCategory(String noteId, String categoryName) {
+        if (categoryCollection.containsKey(categoryName)) {
+            Set<String> noteIds = categoryCollection.get(categoryName);
+            if (noteIds != null) {
+                noteIds.add(noteId);
+            }
+            saveCategoryCollection();
+        }
+    }
+
+    @Override
+    public void removeNoteFromCategory(String noteId, String categoryName) {
+        if (categoryCollection.containsKey(categoryName)) {
+            Set<String> noteIds = categoryCollection.get(categoryName);
+            if (noteIds != null) {
+                noteIds.remove(noteId);
+            }
+            saveCategoryCollection();
+        }
+    }
+
+    @Override
+    public Set<String> getNoteIdsInCategory(String categoryName) {
+        if (categoryCollection.containsKey(categoryName)) {
+            return categoryCollection.get(categoryName);
+        }
+        return null;
+    }
+
+    @Override
+    public Set<String> getAllCategoryNames() {
+        return categoryCollection.keySet();
     }
 
     private void loadIdIndex() {
@@ -133,7 +202,7 @@ public class JsonNoteRepository implements NoteRepository {
     }
 
     @Override
-    public Set<String> getAllNoteIndex() {
+    public Set<String> getAllNoteIds() {
         return notes.keySet();
     }
 

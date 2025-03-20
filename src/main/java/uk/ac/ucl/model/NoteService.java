@@ -17,9 +17,10 @@ public class NoteService {
 
     public NoteService(String dataPath) {
         String indexFilePath = dataPath + "/index.json";
+        String categoryCollectionFilePath = dataPath + File.separator + "/categoryCollection.json";
         String noteFolderPath = dataPath + "/notes/";
         String imageFolderPath = dataPath + "/images/";
-        this.noteRepository = new JsonNoteRepository(indexFilePath, noteFolderPath, imageFolderPath);
+        this.noteRepository = new JsonNoteRepository(indexFilePath, noteFolderPath, imageFolderPath, categoryCollectionFilePath);
         this.notefactory = new NoteFactory(noteRepository);
         this.noteSearch = new NoteSearch(noteRepository);
     }
@@ -27,9 +28,10 @@ public class NoteService {
     public NoteService() {
         // Default data path
         String indexFilePath = "data" + File.separator + "index.json";
-        String noteFolderPath = "data" + File.separator + "notes/";
+        String categoryCollectionFilePath = "data" + File.separator + "categoryCollection.json";
+        String noteFolderPath = "data" + File.separator + "notes" + File.separator;
         String imageFolderPath = "data" + File.separator + "images" + File.separator;
-        this.noteRepository = new JsonNoteRepository(indexFilePath, noteFolderPath, imageFolderPath);
+        this.noteRepository = new JsonNoteRepository(indexFilePath, noteFolderPath, imageFolderPath, categoryCollectionFilePath);
         this.notefactory = new NoteFactory(noteRepository);
         this.noteSearch = new NoteSearch(noteRepository);
     }
