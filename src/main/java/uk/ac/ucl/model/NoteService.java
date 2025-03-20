@@ -5,26 +5,18 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Service class that provides a high-level API for note management operations.
+ * This class acts as a facade for the underlying repository and factory components,
+ * offering methods for creating, retrieving, updating, and deleting notes,
+ * as well as managing categories and performing searches.
+ * The service initializes with default file paths for JSON-based persistence,
+ * creating the necessary repository, factory, and search components.
+ */
 public class NoteService {
-    private NoteRepository noteRepository;
-    private NoteFactory notefactory;
-    private NoteSearch noteSearch;
-
-    public NoteService(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
-        this.notefactory = new NoteFactory(noteRepository);
-        this.noteSearch = new NoteSearch(noteRepository);
-    }
-
-    public NoteService(String dataPath) {
-        String indexFilePath = dataPath + "/index.json";
-        String categoryCollectionFilePath = dataPath + File.separator + "/categoryCollection.json";
-        String noteFolderPath = dataPath + "/notes/";
-        String imageFolderPath = dataPath + "/images/";
-        this.noteRepository = new JsonNoteRepository(indexFilePath, noteFolderPath, imageFolderPath, categoryCollectionFilePath);
-        this.notefactory = new NoteFactory(noteRepository);
-        this.noteSearch = new NoteSearch(noteRepository);
-    }
+    private final NoteRepository noteRepository;
+    private final NoteFactory notefactory;
+    private final NoteSearch noteSearch;
 
     public NoteService() {
         // Default data path

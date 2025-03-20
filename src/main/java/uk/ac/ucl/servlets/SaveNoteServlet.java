@@ -26,6 +26,7 @@ public class SaveNoteServlet extends HttpServlet {
         Note note = noteService.getNoteById(noteId);
         note.setTitle(noteTitle);
 
+        // Validate and format note contents into NoteContent objects
         List<NoteContent> contents = new ArrayList<>();
         if (noteContents != null && contentTypes != null && noteContents.length == contentTypes.length) {
             for (int i = 0; i < noteContents.length; i++) {
