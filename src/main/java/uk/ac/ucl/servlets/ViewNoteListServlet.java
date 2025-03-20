@@ -24,7 +24,16 @@ public class ViewNoteListServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         NoteService noteService = NoteServiceFactory.getNoteService();
-        List<Note> notes = noteService.getAllNotes();
+        request.setAttribute("categories", noteService.getAllCategoryNames());
+        String category = request.getParameter("category");
+        List<Note> notes;
+
+        if (category != null) {
+            notes = noteService.getNotesByCategory(category);
+        } else {
+            notes = noteService.getAllNotes();
+        }
+
         request.setAttribute("notes", notes);
 
         ServletContext context = getServletContext();

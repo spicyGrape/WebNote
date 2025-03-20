@@ -1,6 +1,7 @@
 package uk.ac.ucl.model;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Set;
 
 public interface NoteRepository {
@@ -19,9 +20,9 @@ public interface NoteRepository {
 
     void removeNoteFromCategory(String noteId, String categoryName);
 
-    Set<String> getNoteIdsInCategory(String categoryName);
-
     Set<String> getAllCategoryNames();
+
+    List<Note> getNotesByCategory(String categoryName);
 
     String upLoadImage(InputStream imageInputStream, String fileName);
 }

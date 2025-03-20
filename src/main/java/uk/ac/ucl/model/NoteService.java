@@ -3,6 +3,7 @@ package uk.ac.ucl.model;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 public class NoteService {
     private NoteRepository noteRepository;
@@ -68,4 +69,25 @@ public class NoteService {
     public List<Note> searchNotes(String keyword) {
         return noteSearch.searchNotes(keyword);
     }
+
+    public Set<String> getAllCategoryNames() {
+        return noteRepository.getAllCategoryNames();
+    }
+
+    public List<Note> getNotesByCategory(String categoryName) {
+        return noteRepository.getNotesByCategory(categoryName);
+    }
+
+    public void createNamedCategory(String name) {
+        noteRepository.createNamedCategory(name);
+    }
+
+    public void addNoteToCategory(String noteId, String categoryName) {
+        noteRepository.addNoteToCategory(noteId, categoryName);
+    }
+
+    public void removeNoteFromCategory(String noteId, String categoryName) {
+        noteRepository.removeNoteFromCategory(noteId, categoryName);
+    }
+
 }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -114,10 +115,19 @@ public class JsonNoteRepository implements NoteRepository {
         }
     }
 
-    @Override
-    public Set<String> getNoteIdsInCategory(String categoryName) {
+    private Set<String> getNoteIdsInCategory(String categoryName) {
         if (categoryCollection.containsKey(categoryName)) {
             return categoryCollection.get(categoryName);
+        }
+        return null;
+    }
+
+    public List<Note> getNotesByCategory(String categoryName) {
+        Set<String> noteIds = getNoteIdsInCategory(categoryName);
+        if (noteIds != null) {
+            return noteIds.stream()
+                    .map(this::loadNoteById)
+                    .toList();
         }
         return null;
     }
