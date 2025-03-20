@@ -170,7 +170,7 @@ public class JsonNoteRepository implements NoteRepository {
         }
     }
 
-    private Set<String> getNoteIdsInCategory(String categoryName) {
+    public Set<String> getNoteIdsByCategory(String categoryName) {
         if (categoryCollection.containsKey(categoryName)) {
             return categoryCollection.get(categoryName);
         }
@@ -178,7 +178,7 @@ public class JsonNoteRepository implements NoteRepository {
     }
 
     public List<Note> getNotesByCategory(String categoryName) {
-        Set<String> noteIds = getNoteIdsInCategory(categoryName);
+        Set<String> noteIds = getNoteIdsByCategory(categoryName);
         if (noteIds != null) {
             return noteIds.stream()
                     .map(this::loadNoteById)

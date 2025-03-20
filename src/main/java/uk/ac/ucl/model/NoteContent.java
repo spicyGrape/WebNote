@@ -5,10 +5,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.File;
 
+/**
+ * Represents a content element within a Note in the application.
+ * Each NoteContent contains the actual content (text, image path, URL, etc.) and a type identifier.
+ * The content type determines how the content will be rendered in the user interface.
+ * Supported content types include:
+ * - "text": Plain text content
+ * - "bold_text": Emphasized text content
+ * - "image": Path to an image file
+ * - "url": Web URL
+ * - "html": HTML formatted content
+ * This class provides methods to manage the content including deletion of resources
+ * when necessary (e.g., deleting image files when content is removed).
+ */
 public class NoteContent {
     private String content;
 
-    // contentType can be "text", "image", "url" or "html"
+    // contentType can be "text", "bold_text", "image", "url" or "html"
     private String contentType;
 
     @JsonCreator

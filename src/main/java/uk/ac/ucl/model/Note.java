@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a note in the application with a unique identifier, title and various content elements.
+ * A note can contain multiple content items of different types (text, images, etc.) stored in a list.
+ */
 public class Note {
     private final String id;
     private String title;
@@ -36,10 +40,6 @@ public class Note {
         this.title = title;
     }
 
-    public void addContent(NoteContent content) {
-        contents.add(content);
-    }
-
     public void setContents(List<NoteContent> contents) {
         this.contents = contents;
     }
@@ -53,6 +53,13 @@ public class Note {
         contents.add(newContent);
     }
 
+    /**
+     * Converts all contents of the note into a single text summary.
+     * Text content is included as is (with HTML breaks replaced by spaces),
+     * while non-text content (like images) is represented by a descriptive placeholder.
+     *
+     * @return A String containing the textual summary of all note contents
+     */
     public String summarizeIntoText() {
         StringBuilder summary = new StringBuilder();
         for (NoteContent content : contents) {
@@ -69,7 +76,7 @@ public class Note {
 
     public void deleteAllContents() {
         for (NoteContent content : contents) {
-            content.deleteContent();
+            content.deleteContent(); // To clean up for images uploaded
         }
         contents.clear();
     }

@@ -15,16 +15,14 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/searchNotes.html")
-public class SearchServlet extends HttpServlet
-{
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-  {
-    NoteService noteService = NoteServiceFactory.getNoteService();
-    List<Note> searchResult = noteService.searchNotes(request.getParameter("searchstring"));
-    request.setAttribute("result", searchResult);
+public class SearchServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        NoteService noteService = NoteServiceFactory.getNoteService();
+        List<Note> searchResult = noteService.searchNotes(request.getParameter("searching"), request.getParameter("category"));
+        request.setAttribute("result", searchResult);
 
-    ServletContext context = getServletContext();
-    RequestDispatcher dispatch = context.getRequestDispatcher("/searchResult.jsp");
-    dispatch.forward(request, response);
-  }
+        ServletContext context = getServletContext();
+        RequestDispatcher dispatch = context.getRequestDispatcher("/searchResult.jsp");
+        dispatch.forward(request, response);
+    }
 }

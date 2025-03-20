@@ -63,11 +63,11 @@ public class NoteService {
     }
 
     public List<Note> getAllNotes() {
-        return noteSearch.searchNotes("");
+        return noteSearch.searchNotes("", "All");
     }
 
-    public List<Note> searchNotes(String keyword) {
-        return noteSearch.searchNotes(keyword);
+    public List<Note> searchNotes(String keyword, String category) {
+        return noteSearch.searchNotes(keyword, category);
     }
 
     public Set<String> getAllCategoryNames() {

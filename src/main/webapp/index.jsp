@@ -21,7 +21,7 @@
         <div class="feature-card">
             <h3>Quick Search</h3>
             <p>Find exactly what you need with powerful search.</p>
-            <a href="search.jsp" class="feature-button">Search Notes</a>
+            <a href="search.html" class="feature-button">Search Notes</a>
         </div>
 
         <div class="feature-card">

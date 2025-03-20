@@ -3,7 +3,7 @@
     <nav class="main-nav">
         <a href="index.jsp">Home</a>
         <a href="noteList.html">Notes</a>
-        <a href="search.jsp">Search</a>
+        <a href="search.html">Search</a>
     </nav>
     <div class="clearBoth"></div>
 </header>

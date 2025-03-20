@@ -7,8 +7,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import uk.ac.ucl.model.NoteService;
+import uk.ac.ucl.model.NoteServiceFactory;
 
 import java.io.IOException;
+import java.util.Set;
 
 // The servlet invoked to display a list of patients. Note that this data is just example data,
 // you replace it with your data.
@@ -18,6 +21,11 @@ import java.io.IOException;
 public class SearchPageServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        NoteService noteService = NoteServiceFactory.getNoteService();
+        Set<String> categoryNameCollection = noteService.getAllCategoryNames();
+        request.setAttribute("categoryNameCollection", categoryNameCollection);
+
 
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/search.jsp");

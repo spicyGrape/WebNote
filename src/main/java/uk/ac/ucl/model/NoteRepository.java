@@ -4,6 +4,15 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Repository interface for managing notes and their categories in the application.
+ * This interface defines methods for reading, writing, and organizing notes,
+ * as well as handling note categories and image uploads.
+ * Implementations of this interface handle the actual persistence of notes
+ * and their related data.
+ * For this coursework, the repository is implemented using JSON files.
+ * Might be extended to use a database in the future.
+ */
 public interface NoteRepository {
 
     void writeNote(Note note);
@@ -13,6 +22,8 @@ public interface NoteRepository {
     void deleteNoteById(String id);
 
     Set<String> getAllNoteIds();
+
+    Set<String> getNoteIdsByCategory(String categoryName);
 
     void createNamedCategory(String name);
 
