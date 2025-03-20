@@ -22,6 +22,9 @@
                 <% if ("text".equals(content.getContentType())) { %>
                 <p><%=content.getContent()%>
                 </p>
+                <% } else if ("bold_text".equals(content.getContentType())) { %>
+                <strong><%=content.getContent()%>
+                </strong>
                 <% } else if ("image".equals(content.getContentType())) { %>
                 <img src="${pageContext.request.contextPath}/image?file=<%=content.getContent()%>" alt="Image content">
                 <% } else if ("url".equals(content.getContentType())) { %>
@@ -54,6 +57,7 @@
     </form>
 
     <button id="addTextButton" onclick="addNewContentDiv('text')">Add Text</button>
+    <button id="addBoldTextButton" onclick="addNewContentDiv('bold_text')">Add Bold Text</button>
     <button id="addImageButton" onclick="showImageUploadForm()">Add Image</button>
     <button id="addUrlButton" onclick="showUrlUploadForm()">Add URL</button>
     <button id="addHtmlButton" onclick="addNewContentDiv('html')">Add HTML</button>
@@ -73,7 +77,7 @@
         for (let i = 0; i < contentDivs.length; i++) {
             let contentType = contentDivs[i].getAttribute("data-content-type");
             let contentValue;
-            if (contentType === "text") {
+            if (contentType === "text" || contentType === "bold_text") {
                 contentValue = contentDivs[i].innerText;
             } else if (contentType === "html") {
                 contentValue = contentDivs[i].innerHTML;
@@ -101,6 +105,14 @@
         xhr.open("POST", "saveNote.html", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         xhr.send(formData);
+        // refresh the page after saving
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Refresh the page
+                location.reload();
+            }
+        };
+
     }
 
     function addNewContentDiv(contentType) {
@@ -110,15 +122,8 @@
         newContentDiv.setAttribute("data-content-type", contentType);
         newContentDiv.addEventListener("blur", saveNote);
 
-        if (contentType === "image") {
-            let img = document.createElement("img");
-            img.src = "";
-            newContentDiv.appendChild(img);
-        } else if (contentType === "url") {
-            let a = document.createElement("a");
-            a.href = "";
-            a.innerText = "New URL";
-            newContentDiv.appendChild(a);
+        if (contentType === "bold_text") {
+            newContentDiv.innerHTML = "<strong><br></strong>";
         }
 
         let newButton = document.createElement("button");
