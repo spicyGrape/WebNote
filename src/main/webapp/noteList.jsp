@@ -75,8 +75,26 @@
             </form>
 
             <%
-                }
+            } else {
             %>
+            <label for="addNoteToCategory">Add this note to category?</label>
+            <select id="addNoteToCategory" name="categoryName" onchange="location = this.value;">
+                <option value="noteList.html">No</option>
+                <%
+                    for (String category : categories) {
+                        if (category.equals(currentCategory)) {
+                            continue;
+                        }
+                        String link = "addRemoveNoteToCategory.html?noteId=" + note.getId() + "&categoryName=" + category + "&action=add";
+                %>
+                <option value="<%=link%>"><%=category%>
+                </option>
+                <%
+                    }
+                %>
+            </select>
+            <% } %>
+
         </li>
         <% } %>
     </ul>

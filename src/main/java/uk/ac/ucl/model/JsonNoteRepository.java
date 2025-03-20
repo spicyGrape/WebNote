@@ -211,6 +211,14 @@ public class JsonNoteRepository implements NoteRepository {
         if (note != null) {
             note.deleteAllContents();
         }
+        // Remove the note from all categories
+        for (String categoryName : categoryCollection.keySet()) {
+            Set<String> category = categoryCollection.get(categoryName);
+            if (category != null) {
+                category.remove(id);
+            }
+        }
+        saveCategoryCollection();
         notes.remove(id);
         saveIdIndex();
         File file = openFile(notesDirectory + id + ".json");
