@@ -53,7 +53,7 @@ public class Note {
         contents.add(newContent);
     }
 
-    public String getTextSummary() {
+    public String summarizeIntoText() {
         StringBuilder summary = new StringBuilder();
         for (NoteContent content : contents) {
             if (content.getContentType().equals("text")) {

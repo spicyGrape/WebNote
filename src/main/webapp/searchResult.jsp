@@ -23,7 +23,7 @@
             <h3><a href="note.html?noteId=<%=note.getId()%>"><%=note.getTitle()%>
             </a>
             </h3>
-            <p><%=note.getTextSummary()%>
+            <p><%=note.summarizeIntoText()%>
             </p>
             <% } %>
         </li>
