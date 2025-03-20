@@ -9,7 +9,7 @@ public class NoteFactory {
 
     public NoteFactory(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
-        noteIndex = noteRepository.getAllNoteIndex();
+        noteIndex = noteRepository.getAllNoteIds();
     }
 
     public Note createNote() {

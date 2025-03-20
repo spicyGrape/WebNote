@@ -13,7 +13,7 @@ public class NoteSearch {
     public List<Note> searchNotes(String keyword) {
         keyword = keyword.toLowerCase();
         List<Note> matchingNotes = new ArrayList<>();
-        for (String noteId : noteRepository.getAllNoteIndex()) {
+        for (String noteId : noteRepository.getAllNoteIds()) {
             Note note = noteRepository.loadNoteById(noteId);
             if (note != null && (note.getTitle().toLowerCase().contains(keyword) || noteContentContainsKeyword(note, keyword))) {
                 matchingNotes.add(note);

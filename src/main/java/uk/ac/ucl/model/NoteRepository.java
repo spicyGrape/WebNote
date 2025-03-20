@@ -11,7 +11,17 @@ public interface NoteRepository {
 
     void deleteNoteById(String id);
 
-    Set<String> getAllNoteIndex();
+    Set<String> getAllNoteIds();
+
+    void createNamedCategory(String name);
+
+    void addNoteToCategory(String noteId, String categoryName);
+
+    void removeNoteFromCategory(String noteId, String categoryName);
+
+    Set<String> getNoteIdsInCategory(String categoryName);
+
+    Set<String> getAllCategoryNames();
 
     String upLoadImage(InputStream imageInputStream, String fileName);
 }

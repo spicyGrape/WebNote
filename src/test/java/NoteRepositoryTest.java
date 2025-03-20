@@ -40,9 +40,9 @@ public class NoteRepositoryTest {
     }
 
     @Test
-    public void testNoteRepositoryGetAllNoteIndex() {
+    public void testNoteRepositoryGetAllNoteIds() {
         NoteRepository noteRepository = new JsonNoteRepository(testIndexPath, testNotesDirectory);
-        assert noteRepository.getAllNoteIndex().size() > 0;
+        assert noteRepository.getAllNoteIds().size() > 0;
     }
 
 }
