@@ -12,6 +12,7 @@ import uk.ac.ucl.model.NoteService;
 import uk.ac.ucl.model.NoteServiceFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 // The servlet invoked to display a list of patients. Note that this data is just example data,
@@ -26,10 +27,11 @@ public class ViewNoteListServlet extends HttpServlet {
         NoteService noteService = NoteServiceFactory.getNoteService();
         request.setAttribute("categories", noteService.getAllCategoryNames());
         String category = request.getParameter("category");
-        List<Note> notes;
+        List<Note> notes = new ArrayList<>();
 
-        if (category != null) {
+        if (category != null && !category.isEmpty()) {
             notes = noteService.getNotesByCategory(category);
+            request.setAttribute("selectedCategory", category);
         } else {
             notes = noteService.getAllNotes();
         }

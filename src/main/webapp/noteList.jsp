@@ -12,12 +12,29 @@
 <jsp:include page="/header.jsp"/>
 <div class="main">
     <label for="categorySelector">You can choose a category to view:</label>
+    <%
+        String currentCategory = (String) request.getAttribute("selectedCategory");
+        if (currentCategory == null || currentCategory.isEmpty()) {
+            currentCategory = "All";
+        }
+    %>
     <select id="categorySelector" onchange="location = this.value;">
-        <option value="noteList.html">All</option>
+        <option value="noteList.html"><%=currentCategory%>
+        </option>
+
+        <%
+            if (!"All".equals(currentCategory)) {
+        %>
+        <option value="noteList.html?category=">All</option>
+        <%
+            }%>
         <%
             Set<String> categories = (Set<String>) request.getAttribute("categories");
             if (categories != null && !categories.isEmpty()) {
                 for (String category : categories) {
+                    if (category.equals(currentCategory)) {
+                        continue;
+                    }
                     String href = "noteList.html?category=" + category;
 
         %>
@@ -29,9 +46,10 @@
         <%} %>
     </select>
     <button onclick="showCreateCategoryForm()">Create New Category</button>
-    <form id="createCategoryForm" action="createCategory.html" method="post" style="display:none;">
+    <form id="createCategoryForm" action="manageCategory.html" method="post" style="display:none;">
         <label for="categoryName">Category Name:</label>
         <input type="text" id="categoryName" name="categoryName" required>
+        <input type="hidden" name="action" value="createCategory">
         <button type="submit">Create</button>
     </form>
     <h2>Notes:</h2>
@@ -50,8 +68,20 @@
         <% } %>
     </ul>
     <form action="createNote.html" method="get">
+        <input type="hidden" name="category" value="<%=currentCategory%>">
         <button type="submit">Create New Note</button>
     </form>
+    <%
+        if (!"All".equals(currentCategory)) {
+    %>
+    <form id="deleteCategoryForm" action="manageCategory.html" method="post">
+        <input type="hidden" name="categoryName" value="<%=currentCategory%>">
+        <input type="hidden" name="action" value="deleteCategory">
+        <button type="submit">Delete Current Category</button>
+    </form>
+    <%
+        }
+    %>
 </div>
 <jsp:include page="/footer.jsp"/>
 <script>
@@ -70,6 +100,11 @@
             document.body.appendChild(form);
             form.submit();
         }
+    }
+
+    function showCreateCategoryForm() {
+        var form = document.getElementById("createCategoryForm");
+        form.style.display = "block";
     }
 </script>
 </body>

@@ -1,7 +1,5 @@
 package uk.ac.ucl.servlets;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,6 +16,11 @@ public class CreateNoteServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         NoteService noteService = NoteServiceFactory.getNoteService();
         Note newNote = noteService.createNote();
+        String category = request.getParameter("category");
+        if (category != null && !category.isEmpty() && !"All".equals(category)) {
+            noteService.addNoteToCategory(newNote.getId(), category);
+            request.setAttribute("selectedCategory", category);
+        }
         response.sendRedirect("note.html?noteId=" + newNote.getId());
     }
 }

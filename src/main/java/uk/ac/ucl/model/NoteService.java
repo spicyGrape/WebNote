@@ -90,4 +90,8 @@ public class NoteService {
         noteRepository.removeNoteFromCategory(noteId, categoryName);
     }
 
+    public void deleteCategory(String name) {
+        noteRepository.deleteCategory(name);
+    }
+
 }

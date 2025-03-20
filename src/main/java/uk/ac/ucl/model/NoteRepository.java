@@ -16,6 +16,8 @@ public interface NoteRepository {
 
     void createNamedCategory(String name);
 
+    void deleteCategory(String name);
+
     void addNoteToCategory(String noteId, String categoryName);
 
     void removeNoteFromCategory(String noteId, String categoryName);

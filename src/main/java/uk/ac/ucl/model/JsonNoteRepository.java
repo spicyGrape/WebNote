@@ -9,10 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class JsonNoteRepository implements NoteRepository {
     private Map<String, Note> notes;
@@ -36,6 +33,7 @@ public class JsonNoteRepository implements NoteRepository {
             new File(imageDirectory).mkdirs();
         }
         loadIdIndex();
+        loadCategoryCollection();
     }
 
     private void saveIdIndex() {
@@ -78,8 +76,7 @@ public class JsonNoteRepository implements NoteRepository {
             categoryCollection = objectMapper.readValue(openFile(categoryCollectionFilePath), new TypeReference<Map<String, Set<String>>>() {
             });
         } catch (MismatchedInputException e) {
-            // If the file is empty, just return.
-            return;
+            categoryCollection = new HashMap<>();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,8 +84,9 @@ public class JsonNoteRepository implements NoteRepository {
 
     @Override
     public void createNamedCategory(String name) {
+        Set<String> noteIds = new HashSet<>();
         if (!categoryCollection.containsKey(name)) {
-            categoryCollection.put(name, null);
+            categoryCollection.put(name, noteIds);
             saveCategoryCollection();
         }
     }
@@ -115,6 +113,14 @@ public class JsonNoteRepository implements NoteRepository {
         }
     }
 
+    @Override
+    public void deleteCategory(String name) {
+        if (categoryCollection.containsKey(name)) {
+            categoryCollection.remove(name);
+            saveCategoryCollection();
+        }
+    }
+
     private Set<String> getNoteIdsInCategory(String categoryName) {
         if (categoryCollection.containsKey(categoryName)) {
             return categoryCollection.get(categoryName);
@@ -129,7 +135,7 @@ public class JsonNoteRepository implements NoteRepository {
                     .map(this::loadNoteById)
                     .toList();
         }
-        return null;
+        return new ArrayList<Note>();
     }
 
     @Override
