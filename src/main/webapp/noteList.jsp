@@ -64,6 +64,19 @@
             <a href="<%=href%>"><%=title%>
             </a>
             <button onclick="deleteNote('<%=note.getId()%>')">Delete</button>
+            <%
+                if (currentCategory == null || currentCategory.isEmpty() || !"All".equals(currentCategory)) {
+            %>
+            <form action="addRemoveNoteToCategory.html">
+                <input type="hidden" name="noteId" value="<%=note.getId()%>">
+                <input type="hidden" name="categoryName" value="<%=currentCategory%>">
+                <input type="hidden" name="action" value="remove">
+                <button type="submit">Remove From Current Category</button>
+            </form>
+
+            <%
+                }
+            %>
         </li>
         <% } %>
     </ul>
