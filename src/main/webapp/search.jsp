@@ -22,7 +22,7 @@
             </div>
             <label for="category">Search in Category:</label>
             <select name="category" id="category">
-                <option value="all">All Categories</option>
+                <option value="All">All Categories</option>
                 <%
                     Set<String> categoryNameCollection = (Set<String>) request.getAttribute("categoryNameCollection");
                     if (categoryNameCollection != null) {
