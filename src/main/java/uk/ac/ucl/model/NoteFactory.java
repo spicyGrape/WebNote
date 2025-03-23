@@ -1,5 +1,6 @@
 package uk.ac.ucl.model;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -20,7 +21,7 @@ public class NoteFactory {
 
     public Note createNote() {
         String id = generateId();
-        Note note = new Note(id, "Untitled"); // Default title
+        Note note = new Note(id, "Untitled", new ArrayList<>()); // Default title
         noteRepository.writeNote(note);
         return note;
     }

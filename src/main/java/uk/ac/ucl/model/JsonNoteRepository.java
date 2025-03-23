@@ -225,7 +225,7 @@ public class JsonNoteRepository implements NoteRepository {
             try {
                 JsonNode jsonNode = objectMapper.readTree(openFile(notesDirectory + id + ".json"));
                 String noteTitle = jsonNode.get("title").asText();
-                return new Note(id, noteTitle);
+                return new Note(id, noteTitle, new ArrayList<>());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
